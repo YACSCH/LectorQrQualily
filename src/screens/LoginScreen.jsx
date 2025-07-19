@@ -22,12 +22,13 @@ const LoginScreen = () => {
     }
     console.log('Intentando iniciar sesión con:', email, password);
      try {
+      
       const user = await loginUser( email, password );
      
 
       if (user) {
         setToken(user);
-        navigation.navigate('ManualEntry');
+        navigation.navigate('Scan');
       } else {
         Alert.alert('Error', 'Credenciales incorrectas');
       }

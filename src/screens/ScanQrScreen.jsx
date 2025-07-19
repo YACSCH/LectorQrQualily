@@ -36,20 +36,20 @@ useEffect(() => {
    if (!scanned) {
       setScanned(true);
        
-          console.log(`Tipo: ${type}, Datos: ${data}`);
+      console.log(`Tipo: ${type}, Datos: ${data}`);
           
-         
+      setTimeout(() => setScanned(false), 4000);   
           
       
-      try {
+    /*   try {
         const result = await fetchDataByCodigo(data, token);
         navigation.navigate('Result', { resultado: result });
       } catch (err) {
         Alert.alert('Error', 'Código no encontrado');
         setScanned(false);
-      } 
+      }  */
    }
-    setTimeout(() => setScanned(false), 4000);
+    
 
   }; 
 
