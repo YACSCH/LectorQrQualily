@@ -5,13 +5,13 @@ import LoginScreen from '../screens/LoginScreen';
 import ScanQRScreen from '../screens/ScanQrScreen';
 import ManualEntryScreen from '../screens/ManualEntryScreen';
 import ResultScreen from '../screens/ResultScreen';
-import { AuthContext } from '../store/AuthContext';
+import { useAuth } from '../store/AuthContext';
 
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
   
-const { token } = useContext(AuthContext);
+
 
   return (
     <NavigationContainer>

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { View, Text, StyleSheet, Alert, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, Alert, SafeAreaView, Image } from "react-native";
 import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
 import { AuthContext } from "../store/AuthContext";
@@ -31,6 +31,11 @@ const ManualEntryScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <Image
+              source={require('../../assets/qr-codigo.png')} 
+              style={styles.logo}
+              resizeMode="contain"
+            />
       <Text style={styles.title}>Ingreso Manual</Text>
       <InputField
         placeholder="Nro Lote"
@@ -40,6 +45,7 @@ const ManualEntryScreen = () => {
         autoCapitalize="none"
       />
       <PrimaryButton title="Buscar" onPress={handleSearch} loading={loading} />
+     <PrimaryButton title="Escanear otro codigo" onPress={() => navigation.navigate('Scan')} />
     </SafeAreaView>
   );
 };
@@ -57,6 +63,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 30,
     color: "#007AFF",
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    alignSelf: 'center',
+    marginBottom: 20,
   },
 });
 
