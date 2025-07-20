@@ -16,8 +16,7 @@ export const loginUser = async (email, password) => {
       throw new Error('Token no recibido');
     } 
   } catch (error) {
-    console.log('Error en login:', error.response?.data || error.message);
-    throw error; 
+   throw new Error(error?.response?.data?.message || "Error al obtener los datos");
   }
 };
 
@@ -37,7 +36,6 @@ export const fetchDataByCodigo = async (codigo, token) => {
       throw new Error('Datos no encontrados');
     }
   } catch (error) {
-    console.error('Error al buscar por código:', error.response?.data || error.message);
-    throw error;
+   throw new Error(error?.response?.data?.message || "Error al obtener los datos");
   }
 };

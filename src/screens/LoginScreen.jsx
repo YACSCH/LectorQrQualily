@@ -33,7 +33,7 @@ const LoginScreen = () => {
         Alert.alert('Error', 'Credenciales incorrectas');
       }
     } catch (error) {
-      Alert.alert('Error', 'Ocurrió un error al iniciar sesión');
+      Alert.alert('Error', error.message);
     } 
 
   };

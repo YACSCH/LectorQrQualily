@@ -23,7 +23,7 @@ const ManualEntryScreen = () => {
       const result = await fetchDataByCodigo(codigo, token);
       navigation.navigate("Result", { resultado: result });
     } catch (err) {
-      Alert.alert("Error", "Código no encontrado");
+      Alert.alert("Error", err.message);
     } finally {
       setLoading(false);
     }
@@ -41,10 +41,10 @@ const ManualEntryScreen = () => {
         placeholder="Nro Lote"
         value={codigo}
         onChangeText={setCodigo}
-        keyboardType="default"
+        keyboardType='numeric'
         autoCapitalize="none"
       />
-      <PrimaryButton title="Buscar" onPress={handleSearch} loading={loading} />
+     <PrimaryButton title="Buscar" onPress={handleSearch} loading={loading} />
      <PrimaryButton title="Escanear otro codigo" onPress={() => navigation.navigate('Scan')} />
     </SafeAreaView>
   );
