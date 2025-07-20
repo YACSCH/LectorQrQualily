@@ -58,9 +58,10 @@ const LoginScreen = () => {
         placeholder="Contraseña"
         value={password}
         onChangeText={setPassword}
-        keyboardType="email-address"
+        keyboardType="default"
         autoCapitalize="none"
         secureTextEntry
+        
       />
       <PrimaryButton title="Ingresar" onPress={handleLogin} />
     </View>
