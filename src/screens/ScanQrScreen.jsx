@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
 import { CameraView, Camera } from "expo-camera";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { AuthContext } from "../store/AuthContext";
 import { fetchDataByCodigo } from "../services/Api";
 import QRScannerOverlay from "../components/QrScannerOverlay";
@@ -10,9 +10,10 @@ import PrimaryButton from "../components/PrimaryButton";
 export default function ScanQrScreen() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
-  const [isActive, setIsActive] = useState(true);
+   const [cameraActive, setCameraActive] = useState(true);
   const navigation = useNavigation();
   const { token } = useContext(AuthContext);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const getCameraPermissions = async () => {
@@ -21,12 +22,23 @@ export default function ScanQrScreen() {
     };
 
     getCameraPermissions();
-
-    return () => setIsActive(false);
+    //return () => setIsActive(false);
   }, []);
 
+  // Efecto para manejar el cambio de tabs
+  useEffect(() => {
+    if (isFocused) {
+      // Reactivar la cámara cuando la pantalla vuelve a estar en foco
+      setCameraActive(true);
+      setScanned(false);
+    } else {
+      // Desactivar la cámara cuando cambiamos de tab
+      setCameraActive(false);
+    }
+  }, [isFocused]);
+
   const handleBarCodeScanned = async ({ data }) => {
-    if (!scanned && isActive) {
+    if (!scanned) {
       setScanned(true);
 
       try {
@@ -66,13 +78,13 @@ export default function ScanQrScreen() {
 
   return (
     <View style={styles.container}>
-      <CameraView
-        style={StyleSheet.absoluteFillObject}
-        barcodeScannerSettings={{
-          barcodeTypes: ["qr", "pdf417", "upc_a", "ean13"],
-        }}
-        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
-      />
+      {isFocused && cameraActive && (
+        <CameraView
+          style={StyleSheet.absoluteFillObject}
+          barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+          onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+        />
+      )}
       <QRScannerOverlay />
       <View style={styles.buttonContainer}>
         <PrimaryButton
