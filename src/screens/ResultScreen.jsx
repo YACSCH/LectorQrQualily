@@ -45,7 +45,7 @@ const ResultScreen = ({ route, navigation }) => {
         </Text>
       </View>
 
-      <PrimaryButton title="Escanear otro código" onPress={() => navigation.navigate('Scan')} />
+      <PrimaryButton title="Escanear otro código" onPress={() => navigation.navigate("main", { screen: "scan" })} />
     </ScrollView>
   );
 };

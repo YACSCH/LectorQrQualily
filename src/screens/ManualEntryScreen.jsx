@@ -21,7 +21,7 @@ const ManualEntryScreen = () => {
     setLoading(true);
     try {
       const result = await fetchDataByCodigo(codigo, token);
-      navigation.navigate("Result", { resultado: result });
+      navigation.navigate("result", { resultado: result });
     } catch (err) {
       Alert.alert("Error", err.message);
     } finally {
@@ -45,7 +45,7 @@ const ManualEntryScreen = () => {
         autoCapitalize="none"
       />
      <PrimaryButton title="Buscar" onPress={handleSearch} loading={loading} />
-     <PrimaryButton title="Escanear otro codigo" onPress={() => navigation.navigate('Scan')} />
+     <PrimaryButton title="Escanear otro codigo" onPress={() => navigation.navigate("main", { screen: "scan" })} />
     </SafeAreaView>
   );
 };

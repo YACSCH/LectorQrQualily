@@ -33,22 +33,17 @@ export default function ScanQrScreen() {
         const lote = data.trim().substring(0, 10);
 
         const result = await fetchDataByCodigo(lote, token);
-        
-        navigation.navigate("Result", { resultado: result });
-      
+
+        navigation.navigate("result", { resultado: result });
       } catch (err) {
-      
-         Alert.alert(
-    "Error", 
-    err.response?.status === 404 
-      ? "El código no existe en nuestros registros" 
-      : "Error al consultar el servidor"
-  );
-      
+        Alert.alert(
+          "Error",
+          err.response?.status === 404
+            ? "El código no existe en nuestros registros"
+            : "Error al consultar el servidor"
+        );
       } finally {
-      
         setTimeout(() => setScanned(false), 3000);
-      
       }
     }
   };
@@ -82,7 +77,7 @@ export default function ScanQrScreen() {
       <View style={styles.buttonContainer}>
         <PrimaryButton
           title="Ingreso manual"
-          onPress={() => navigation.navigate("ManualEntry")}
+          onPress={() => navigation.navigate("manualEntry")}
         />
       </View>
     </View>

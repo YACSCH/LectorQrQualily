@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, Image } from 'react-native';
 import InputField from '../components/InputField';
 import PrimaryButton from '../components/PrimaryButton';
@@ -11,11 +11,19 @@ import { AuthContext } from '../store/AuthContext';
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setToken } = useContext(AuthContext);
+  const { token,  setToken } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
+
+   useEffect(() => {
+    if (token) {
+      navigation.navigate("main", { screen: "scan" });
+    }
+  }, [token]);
+
   const handleLogin = async () => {
+    
     if (!email || !password) {
       Alert.alert('Error', 'Por favor, completa todos los campos');
       return;
@@ -27,8 +35,7 @@ const LoginScreen = () => {
      
 
       if (user) {
-        setToken(user);
-        navigation.navigate('Scan');
+         setToken(user);
       } else {
         Alert.alert('Error', 'Credenciales incorrectas');
       }
