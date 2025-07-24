@@ -6,6 +6,8 @@ import { AuthContext } from "../store/AuthContext";
 import { fetchDataByCodigo } from "../services/Api";
 import QRScannerOverlay from "../components/QrScannerOverlay";
 import PrimaryButton from "../components/PrimaryButton";
+import { ScanDatabase } from '../services/Database';
+
 
 export default function ScanQrScreen() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -25,14 +27,14 @@ export default function ScanQrScreen() {
     //return () => setIsActive(false);
   }, []);
 
-  // Efecto para manejar el cambio de tabs
+ 
   useEffect(() => {
     if (isFocused) {
-      // Reactivar la cámara cuando la pantalla vuelve a estar en foco
+      
       setCameraActive(true);
       setScanned(false);
     } else {
-      // Desactivar la cámara cuando cambiamos de tab
+      
       setCameraActive(false);
     }
   }, [isFocused]);
@@ -45,6 +47,8 @@ export default function ScanQrScreen() {
         const lote = data.trim().substring(0, 10);
 
         const result = await fetchDataByCodigo(lote, token);
+
+        await ScanDatabase.insertResult(result);
 
         navigation.navigate("result", { resultado: result });
       } catch (err) {
