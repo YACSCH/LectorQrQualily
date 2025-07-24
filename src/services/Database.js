@@ -37,7 +37,7 @@ export const ScanDatabase = {
     try {
       const db = await openDatabaseConnection();
       const result = await db.runAsync(
-        `INSERT INTO scan_results 
+        `INSERT OR REPLACE INTO scan_results 
         (lote, informe_url, fecha_informe, certificado_url, fecha_certificado, created_at, scan_date) 
         VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`,
         [
