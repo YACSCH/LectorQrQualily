@@ -11,9 +11,9 @@ export const openDatabaseConnection = async () => {
     
     await dbInstance.execAsync(`
       PRAGMA journal_mode = WAL;
-      CREATE TABLE IF NOT EXISTS scan_results (
+      CREATE TABLE scan_results (
         id INTEGER PRIMARY KEY NOT NULL,
-        lote TEXT NOT NULL UNIQUE,
+        lote TEXT NOT NULL,
         informe_url TEXT,
         fecha_informe TEXT,
         certificado_url TEXT,
@@ -37,7 +37,7 @@ export const ScanDatabase = {
     try {
       const db = await openDatabaseConnection();
       const result = await db.runAsync(
-        `INSERT OR REPLACE INTO scan_results 
+        `INSERT INTO scan_results 
         (lote, informe_url, fecha_informe, certificado_url, fecha_certificado, created_at, scan_date) 
         VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`,
         [
