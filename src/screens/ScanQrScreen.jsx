@@ -51,6 +51,7 @@ export default function ScanQrScreen() {
         await ScanDatabase.insertResult(result);
 
         navigation.navigate("result", { resultado: result });
+        
       } catch (err) {
         Alert.alert(
           "Error",

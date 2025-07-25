@@ -1,97 +1,223 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Linking } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Linking, Alert, SafeAreaView, Dimensions } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import PrimaryButton from '../components/PrimaryButton';
+import { formatDate } from '../utils/formateDate';
+
+const { width } = Dimensions.get('window');
 
 const ResultScreen = ({ route, navigation }) => {
   const { resultado } = route.params;
 
-  const openUrl = (url) => {
-    if (url) Linking.openURL(url.trim());
+  const openUrl = async (url) => {
+    if (!url) {
+      Alert.alert('Información', 'No hay enlace disponible');
+      return;
+    }
+
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url.trim());
+      } else {
+        Alert.alert('Error', 'No se puede abrir este enlace');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Ocurrió un problema al abrir el enlace');
+      console.error('Error opening URL:', error);
+    }
   };
 
+ 
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Resultado</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        
+        <View style={styles.header}>
+          <Ionicons name="checkmark-circle" size={width * 0.15} color="#4CAF50" />
+          <Text style={styles.title}>Resultado del Escaneo</Text>
+          <Text style={styles.subtitle}>Detalles completos del lote escaneado</Text>
+        </View>
 
-      <View style={styles.card}>
-        <Text style={styles.label}>Lote:</Text>
-        <Text style={styles.value}>{resultado.lote}</Text>
+       
+        <View style={styles.content}>
+          
+          <View style={styles.card}>
+            <View style={styles.cardHeader}>
+              <Ionicons name="qr-code" size={width * 0.07} color="#5E35B1" />
+              <Text style={styles.cardTitle}>Información del Lote</Text>
+            </View>
+            <Text style={styles.loteText}>{resultado.lote}</Text>
+            
+          </View>
+
+          {/* Card Informe */}
+          <View style={styles.card}>
+            <View style={styles.cardHeader}>
+              <Ionicons name="document-text" size={width * 0.07} color="#2196F3" />
+              <Text style={styles.cardTitle}>Informe</Text>
+            </View>
+            
+            {resultado.informe ? (
+              <>
+                <TouchableOpacity 
+                  style={styles.linkButton}
+                  onPress={() => openUrl(resultado.informe)}
+                >
+                  <Text style={styles.linkText}>Abrir Informe Completo</Text>
+                  <Ionicons name="open-outline" size={width * 0.06} color="#2196F3" />
+                </TouchableOpacity>
+                <Text style={styles.dateText}>
+                  <Ionicons name="calendar" size={width * 0.04} color="#757575" />{' '}
+                  {formatDate(resultado.fecha_informe)}
+                </Text>
+              </>
+            ) : (
+              <Text style={styles.emptyText}>No hay informe disponible</Text>
+            )}
+          </View>
+
+          {/* Card Certificado */}
+          <View style={styles.card}>
+            <View style={styles.cardHeader}>
+              <Ionicons name="ribbon" size={width * 0.07} color="#FF9800" />
+              <Text style={styles.cardTitle}>Certificado</Text>
+            </View>
+            
+            {resultado.certificado ? (
+              <>
+                <TouchableOpacity 
+                  style={styles.linkButton}
+                  onPress={() => openUrl(resultado.certificado)}
+                >
+                  <Text style={styles.linkText}>Abrir Certificado</Text>
+                  <Ionicons name="open-outline" size={width * 0.06} color="#FF9800" />
+                </TouchableOpacity>
+                <Text style={styles.dateText}>
+                  <Ionicons name="calendar" size={width * 0.04} color="#757575" />{' '}
+                  {formatDate(resultado.fecha_certificado)}
+                </Text>
+              </>
+            ) : (
+              <Text style={styles.emptyText}>No hay certificado disponible</Text>
+            )}
+          </View>
+        </View>
+
+        {/* Footer */}
+        <View style={styles.footer}>
+          <PrimaryButton 
+            title="Escanear otro código" 
+            onPress={() => navigation.navigate("main", { screen: "scan" })}
+            icon={<Ionicons name="qr-code-outline" size={width * 0.05} color="white" />}
+          />
+        </View>
       </View>
-
-      <View style={styles.card}>
-        <Text style={styles.label}>Informe:</Text>
-        <TouchableOpacity onPress={() => openUrl(resultado.informe)}>
-          <Text style={[styles.value, styles.link]}>Ver Informe</Text>
-        </TouchableOpacity>
-        <Text style={styles.date}>
-          Fecha: {new Date(resultado.fecha_informe).toLocaleString()}
-        </Text>
-      </View>
-
-      <View style={styles.card}>
-        <Text style={styles.label}>Certificado:</Text>
-        <TouchableOpacity onPress={() => openUrl(resultado.certificado)}>
-          <Text style={[styles.value, styles.link]}>Ver Certificado</Text>
-        </TouchableOpacity>
-        <Text style={styles.date}>
-          Fecha: {new Date(resultado.fecha_certificado).toLocaleString()}
-        </Text>
-      </View>
-
-      <View style={styles.card}>
-        <Text style={styles.label}>Creado el:</Text>
-        <Text style={styles.value}>
-          {new Date(resultado.created_at).toLocaleString()}
-        </Text>
-      </View>
-
-      <PrimaryButton title="Escanear otro código" onPress={() => navigation.navigate("main", { screen: "scan" })} />
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#f5f5f5ff',
+   
+  },
   container: {
-    padding: 20,
-    backgroundColor: '#F8F9FA',
-    flexGrow: 1,
+    flex: 1,
+    justifyContent: 'space-between',
+    marginTop: Dimensions.get('window').height * 0.04,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 25,
-    marginTop: 40,
-    color: '#007AFF',
-    textAlign: 'center',
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 15,
-    marginBottom: 15,
+  header: {
+    alignItems: 'center',
+    paddingVertical: Dimensions.get('window').height * 0.02,
+    backgroundColor: '#FFFFFF',
+    marginBottom: Dimensions.get('window').height * 0.02,
     shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 10,
+    shadowRadius: 6,
     elevation: 3,
   },
-  label: {
-    fontWeight: '600',
-    fontSize: 16,
-    color: '#1C1C1E',
-    marginBottom: 5,
+  title: {
+    fontSize: width * 0.06,
+    fontWeight: 'bold',
+    color: '#333',
+    marginTop: Dimensions.get('window').height * 0.01,
   },
-  value: {
-    fontSize: 16,
+  subtitle: {
+    fontSize: width * 0.04,
+    color: '#757575',
+    marginTop: Dimensions.get('window').height * 0.005,
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: width * 0.05,
+    paddingBottom: Dimensions.get('window').height * 0.02,
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    padding: width * 0.04,
+    marginBottom: Dimensions.get('window').height * 0.02,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Dimensions.get('window').height * 0.015,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEEEEE',
+    paddingBottom: Dimensions.get('window').height * 0.015,
+  },
+  cardTitle: {
+    fontSize: width * 0.045,
+    fontWeight: '600',
+    color: '#333',
+    marginLeft: width * 0.03,
+  },
+  loteText: {
+    fontSize: width * 0.07,
+    fontWeight: 'bold',
+    color: '#5E35B1',
+    textAlign: 'center',
+    marginVertical: Dimensions.get('window').height * 0.01,
+  },
+  linkButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 8,
+    padding: width * 0.04,
+    marginTop: Dimensions.get('window').height * 0.01,
+  },
+  linkText: {
+    fontSize: width * 0.04,
+    fontWeight: '600',
     color: '#333',
   },
-  link: {
-    color: '#007AFF',
-    textDecorationLine: 'underline',
+  dateText: {
+    fontSize: width * 0.035,
+    color: '#757575',
+    marginTop: Dimensions.get('window').height * 0.015,
+    fontStyle: 'italic',
   },
-  date: {
-    marginTop: 4,
-    fontSize: 14,
-    color: '#666',
+  emptyText: {
+    fontSize: width * 0.04,
+    color: '#9E9E9E',
+    textAlign: 'center',
+    marginVertical: Dimensions.get('window').height * 0.01,
+    fontStyle: 'italic',
+  },
+  footer: {
+    paddingHorizontal: width * 0.05,
+    paddingBottom: Dimensions.get('window').height * 0.03,
   },
 });
 
