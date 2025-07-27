@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "LectorQr",
-    "slug": "LectorQr",
+    "name": "CertificadosQr",
+    "slug": "CertificadosQr",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/qr-icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/qr-codigo.png",
+      "image": "./assets/qr-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
