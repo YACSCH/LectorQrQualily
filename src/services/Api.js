@@ -16,7 +16,7 @@ export const loginUser = async (email, password) => {
       throw new Error('Token no recibido');
     } 
   } catch (error) {
-   throw new Error(error?.response?.data?.message || "Error al obtener los datos");
+   throw new Error(error?.response?.data?.error || "Error al obtener los datos");
   }
 };
 

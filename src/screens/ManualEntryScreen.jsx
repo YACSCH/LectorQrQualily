@@ -49,7 +49,7 @@ const ManualEntryScreen = () => {
       >
         <View style={styles.header}>
           <Ionicons 
-            name="keypad" 
+            name="qr-code" 
             size={width * 0.15} 
             color="#5E35B1" 
             style={styles.icon}
