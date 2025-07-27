@@ -3,6 +3,7 @@ import { View, FlatList, TouchableOpacity, Text, StyleSheet, Linking, Alert, Saf
 import { Ionicons } from '@expo/vector-icons';
 import { ScanDatabase } from '../services/Database';
 import { useIsFocused } from '@react-navigation/native';
+import { formatDate } from '../utils/formateDate';
 
 export default function HistoryScreen() {
   const [scans, setScans] = useState([]);
@@ -47,17 +48,6 @@ export default function HistoryScreen() {
     }
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return 'Sin fecha';
-    const date = new Date(dateString);
-    return date.toLocaleDateString('es-CL', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).replace('.', '');
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -81,7 +71,6 @@ export default function HistoryScreen() {
             <View style={styles.cardHeader}>
               <Ionicons name="qr-code" size={24} color="#5E35B1" />
               <Text style={styles.loteText}>{item.lote}</Text>
-              <Text style={styles.scanDate}>{formatDate(item.scan_date)}</Text>
             </View>
 
             <View style={styles.linksContainer}>

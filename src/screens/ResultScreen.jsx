@@ -35,9 +35,8 @@ const ResultScreen = ({ route, navigation }) => {
       <View style={styles.container}>
         
         <View style={styles.header}>
-          <Ionicons name="checkmark-circle" size={width * 0.15} color="#4CAF50" />
+          <Ionicons name="checkmark-circle" size={width * 0.12} color="#4CAF50" />
           <Text style={styles.title}>Resultado del Escaneo</Text>
-          <Text style={styles.subtitle}>Detalles completos del lote escaneado</Text>
         </View>
 
        
@@ -65,7 +64,7 @@ const ResultScreen = ({ route, navigation }) => {
                   style={styles.linkButton}
                   onPress={() => openUrl(resultado.informe)}
                 >
-                  <Text style={styles.linkText}>Abrir Informe Completo</Text>
+                  <Text style={styles.linkText}>Abrir Informe</Text>
                   <Ionicons name="open-outline" size={width * 0.06} color="#2196F3" />
                 </TouchableOpacity>
                 <Text style={styles.dateText}>

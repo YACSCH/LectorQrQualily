@@ -15,11 +15,15 @@ import { colors } from '../constants/colors'
 
 
 import { useAuth } from '../store/AuthContext';
+import DummyScreen from '../screens/DummyScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function TabsNavigator() {
+
+const { setToken } = useAuth()
+
   return (
     <Tab.Navigator   screenOptions={{
         headerShown: false,
@@ -53,6 +57,26 @@ function TabsNavigator() {
           tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'time' : 'time-outline'}
+              size={26}
+              color={color}
+            />
+          ),
+
+         }}
+      />
+        <Tab.Screen
+        name="logout"
+        component={DummyScreen}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault(); 
+            setToken(null);     
+          },
+        }}
+        options={{ title: 'Salir',
+          tabBarIcon: ({ focused, color, size }) => (
+            <Ionicons
+              name={focused ? 'log-out' : 'log-out-outline'}
               size={26}
               color={color}
             />
