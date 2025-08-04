@@ -39,7 +39,7 @@
           "cameraPermission": "Est aplicaion necesita permisos para accesar a la camara"
         }
       ],
-      [ 
+      [
         "expo-sqlite",
         {
           "enableFTS": true,
@@ -49,10 +49,17 @@
             "useSQLCipher": false
           },
           "ios": {
-            "customBuildFlags": ["-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1"]
+            "customBuildFlags": [
+              "-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1"
+            ]
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "f357fc56-05d3-46a0-9a5b-9d6c4ada323d"
+      }
+    }
   }
 }
