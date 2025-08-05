@@ -13,7 +13,7 @@ export const openDatabaseConnection = async () => {
       PRAGMA journal_mode = WAL;
       CREATE TABLE IF NOT EXISTS scan_results (
         id INTEGER PRIMARY KEY NOT NULL,
-        lote TEXT NOT NULL,
+        lote TEXT NOT NULL ,
         informe_url TEXT,
         fecha_informe TEXT,
         certificado_url TEXT,
