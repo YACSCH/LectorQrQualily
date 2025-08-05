@@ -12,7 +12,8 @@ export const openDatabaseConnection = async () => {
     await dbInstance.execAsync(`
       PRAGMA journal_mode = WAL;
       CREATE TABLE IF NOT EXISTS scan_results (
-        lote TEXT PRIMARY KEY NOT NULL,
+        id INTEGER PRIMARY KEY NOT NULL,
+        lote TEXT NOT NULL UNIQUE,
         informe_url TEXT,
         fecha_informe TEXT,
         certificado_url TEXT,
